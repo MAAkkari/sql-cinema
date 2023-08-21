@@ -1,0 +1,232 @@
+-- --------------------------------------------------------
+-- Hôte:                         127.0.0.1
+-- Version du serveur:           8.0.33 - MySQL Community Server - GPL
+-- SE du serveur:                Win64
+-- HeidiSQL Version:             12.1.0.6537
+-- --------------------------------------------------------
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+
+-- Listage de la structure de la base pour sql_cinema
+CREATE DATABASE IF NOT EXISTS `sql_cinema` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `sql_cinema`;
+
+-- Listage de la structure de table sql_cinema. acteur
+CREATE TABLE IF NOT EXISTS `acteur` (
+  `id_acteur` int NOT NULL AUTO_INCREMENT,
+  `id_personne` int NOT NULL,
+  PRIMARY KEY (`id_acteur`),
+  UNIQUE KEY `id_personne` (`id_personne`),
+  CONSTRAINT `acteur_ibfk_1` FOREIGN KEY (`id_personne`) REFERENCES `personne` (`id_personne`)
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Listage des données de la table sql_cinema.acteur : ~14 rows (environ)
+INSERT INTO `acteur` (`id_acteur`, `id_personne`) VALUES
+	(1, 1),
+	(2, 2),
+	(4, 4),
+	(6, 6),
+	(23, 7),
+	(9, 9),
+	(10, 10),
+	(12, 12),
+	(13, 13),
+	(14, 14),
+	(15, 15),
+	(8, 16),
+	(7, 17),
+	(11, 19);
+
+-- Listage de la structure de table sql_cinema. appartenir
+CREATE TABLE IF NOT EXISTS `appartenir` (
+  `id_film` int NOT NULL,
+  `id_genre` int NOT NULL,
+  PRIMARY KEY (`id_film`,`id_genre`),
+  KEY `id_genre` (`id_genre`),
+  CONSTRAINT `appartenir_ibfk_1` FOREIGN KEY (`id_film`) REFERENCES `film` (`id_film`),
+  CONSTRAINT `appartenir_ibfk_2` FOREIGN KEY (`id_genre`) REFERENCES `genre` (`id_genre`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Listage des données de la table sql_cinema.appartenir : ~16 rows (environ)
+INSERT INTO `appartenir` (`id_film`, `id_genre`) VALUES
+	(1, 1),
+	(4, 1),
+	(5, 1),
+	(6, 1),
+	(7, 1),
+	(13, 1),
+	(2, 2),
+	(4, 2),
+	(2, 3),
+	(3, 3),
+	(5, 3),
+	(6, 3),
+	(1, 4),
+	(3, 5),
+	(11, 5),
+	(14, 5);
+
+-- Listage de la structure de table sql_cinema. film
+CREATE TABLE IF NOT EXISTS `film` (
+  `id_film` int NOT NULL AUTO_INCREMENT,
+  `titre_film` varchar(255) NOT NULL,
+  `année_sortie_fr` date NOT NULL,
+  `durée_minute` int NOT NULL,
+  `affiche` text NOT NULL,
+  `note` int NOT NULL,
+  `synopsis` text,
+  `id_auteur` int NOT NULL,
+  PRIMARY KEY (`id_film`),
+  KEY `id_auteur` (`id_auteur`),
+  CONSTRAINT `film_ibfk_1` FOREIGN KEY (`id_auteur`) REFERENCES `realisateur` (`id_auteur`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Listage des données de la table sql_cinema.film : ~10 rows (environ)
+INSERT INTO `film` (`id_film`, `titre_film`, `année_sortie_fr`, `durée_minute`, `affiche`, `note`, `synopsis`, `id_auteur`) VALUES
+	(1, 'Oppenheimer', '2021-05-20', 120, 'public\\img\\oppenheimer.webp', 5, 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa doloremque dolorum inventore aliquid suscipit dolore magnaLorem ipsum dolor sit amet consectetur adipisicing elit. Culpa doloremque dolorum inventore aliquid suscipit dolore magnam nesciunt minima aspernatur maxime tempora nemo similique laudantium quaerat ipsa, assumenda illum ve', 1),
+	(2, 'barbie', '2019-08-10', 105, 'public\\img\\barbie.jpg', 4, 'Synopsis of Movie B', 2),
+	(3, 'covenant', '2022-11-15', 95, 'public\\img\\covenant.webp', 4, 'Synopsis of Movie C', 3),
+	(4, 'indiana jones', '2020-03-25', 110, 'public\\img\\indiana.jpg', 3, 'Synopsis of Movie D', 2),
+	(5, 'Scarface', '1983-03-07', 170, 'public\\img\\Scarface.jpg', 2, 'En mai 1980, Fidel Castro autorise les opposants qui le souhaitent à quitter Cuba. Il en profite pour envoyer vers les États-Unis les malfrats devenus indésirables dans l\'île. C\'est ainsi que Tony Montana, un tueur mégalomane, se met à vivre son rêve américain. En deux temps, trois mouvements, il devient le bras droit de Frank Lopez, un magnat de la drogue, qu\'il ne tarde pas à éliminer. Ainsi propulsé patron, il épouse au passage la veuve de sa victime.', 4),
+	(6, 'Picky Blinder', '2023-06-10', 90, 'public\\img\\pickyblinders.jpg', 4, 'En 1919, à Birmingham, soldats, révolutionnaires, politiques et criminels combattent pour se faire une place dans le paysage industriel de l\'après-guerre. Le Parlement s\'attend à une violente révolte, et Winston Churchill mobilise des forces spéciales pour contenir les menaces.', 3),
+	(7, 'Femme fatale', '2002-07-27', 114, 'public\\img\\femme-fatale.jpg', 5, 'Durant le festival de Cannes, un groupe de malfaiteurs monte une opération pour dérober une superbe monture de diamants portée par la top model Veronica à l\'occasion d\'une projection spéciale du film Est-Ouest de Régis Wargnier. Parmi les malfaiteurs, Laure (Rebecca Romijn) séduit Veronica (Rie Rasmussen), sensible à ses charmes, et l\'incite à la suivre dans les toilettes. Tout en lui faisant l\'amour, elle lui ôte sa monture pendant qu\'un complice, Black Tie (Ériq Ebouaney)5, remplace celle-ci par un faux. Dans le même temps, Racine (Edouard Montoute), autre complice, est chargé de neutraliser les lumières pour faciliter la fuite des deux premiers. L\'opération se passe bien jusqu\'à ce qu\'un garde du corps, alerté, fasse irruption dans les toilettes. Alors que Black Tie est gravement blessé par le garde, Laure s\'enfuit seule avec les diamants.', 5),
+	(11, 'Titanic', '1997-01-01', 195, 'public\\img\\titanic.jpg', 4, 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa doloremque dolorum inventore aliquid suscipit dolore magnaLorem ipsum dolor sit amet consectetur adipisicing elit. Culpa doloremque dolorum inventore aliquid suscipit dolore magnam nesciunt minima aspernatur maxime tempora nemo similique laudantium quaerat ipsa, assumenda illum ve', 1),
+	(13, 'Pulp Fiction', '1994-07-27', 154, 'public\\img\\pulp-fiction.webp', 5, 'Dans un café-restaurant de Los Angeles, dans la matinée, un couple de jeunes braqueurs, Pumpkin (appelé Ringo par Jules) et Yolanda (Tim Roth et Amanda Plummer), discutent des risques que comporte leur activité. Ils se décident finalement à attaquer le lieu, afin de pouvoir dévaliser à la fois l\'établissement et les clients. Deux truands, Jules Winnfield (Samuel L. Jackson) et son ami Vincent Vega (John Travolta), qui revient d\'Amsterdam, ont pour mission de récupérer une mallette au contenu mystérieux et de la rapporter à Marsellus Wallace (Ving Rhames), leur patron. Avant de commencer leur affaire, ils discutent de tout et de rien, Vincent qui revient d’Amsterdam parle des différences entre la vie en Europe et aux États-Unis ainsi que du système métrique des hamburgers à Paris, Jules lui raconte une histoire dans laquelle Marsellus aurait jeté un dénommé Tony Rocky Horror de sa fenêtre', 2),
+	(14, 'Django Unchained', '2012-07-27', 165, 'public\\img\\django.webp', 4, 'Deux ans avant la Guerre civile, un ancien esclave du nom de Django s\'associe avec un chasseur de primes d\'origine allemande qui l\'a libéré: il accepte de traquer avec lui des criminels recherchés. En échange, il l\'aidera à retrouver sa femme perdue depuis longtemps et esclave elle aussi.', 2);
+
+-- Listage de la structure de table sql_cinema. genre
+CREATE TABLE IF NOT EXISTS `genre` (
+  `id_genre` int NOT NULL AUTO_INCREMENT,
+  `libelle` varchar(50) NOT NULL,
+  PRIMARY KEY (`id_genre`)
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Listage des données de la table sql_cinema.genre : ~5 rows (environ)
+INSERT INTO `genre` (`id_genre`, `libelle`) VALUES
+	(1, 'Action'),
+	(2, 'Comedy'),
+	(3, 'Drama'),
+	(4, 'Sci-Fi'),
+	(5, 'Thriller');
+
+-- Listage de la structure de table sql_cinema. jouer
+CREATE TABLE IF NOT EXISTS `jouer` (
+  `id_film` int NOT NULL,
+  `id_acteur` int NOT NULL,
+  `Id_role` int NOT NULL,
+  PRIMARY KEY (`id_film`,`id_acteur`,`Id_role`),
+  KEY `id_acteur` (`id_acteur`),
+  KEY `Id_role` (`Id_role`),
+  CONSTRAINT `jouer_ibfk_1` FOREIGN KEY (`id_film`) REFERENCES `film` (`id_film`),
+  CONSTRAINT `jouer_ibfk_2` FOREIGN KEY (`id_acteur`) REFERENCES `acteur` (`id_acteur`),
+  CONSTRAINT `jouer_ibfk_3` FOREIGN KEY (`Id_role`) REFERENCES `role` (`Id_role`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Listage des données de la table sql_cinema.jouer : ~17 rows (environ)
+INSERT INTO `jouer` (`id_film`, `id_acteur`, `Id_role`) VALUES
+	(0, 0, 1),
+	(1, 1, 1),
+	(4, 2, 2),
+	(5, 3, 5),
+	(6, 3, 3),
+	(11, 4, 2),
+	(1, 5, 2),
+	(4, 5, 1),
+	(3, 6, 1),
+	(2, 7, 2),
+	(7, 10, 6),
+	(5, 11, 1),
+	(13, 12, 7),
+	(3, 13, 14),
+	(14, 14, 8),
+	(7, 15, 11),
+	(5, 23, 11);
+
+-- Listage de la structure de table sql_cinema. personne
+CREATE TABLE IF NOT EXISTS `personne` (
+  `id_personne` int NOT NULL AUTO_INCREMENT,
+  `nom` varchar(50) NOT NULL,
+  `prenom` varchar(50) NOT NULL,
+  `sexe` varchar(10) NOT NULL,
+  `date_naissance` date NOT NULL,
+  `photo` varchar(240) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  PRIMARY KEY (`id_personne`)
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Listage des données de la table sql_cinema.personne : ~19 rows (environ)
+INSERT INTO `personne` (`id_personne`, `nom`, `prenom`, `sexe`, `date_naissance`, `photo`) VALUES
+	(1, 'Murphy', 'Cillian', 'Male', '1976-05-25', 'public\\img\\cillian-murphy.webp'),
+	(2, 'Downey jr', 'Robert', 'Female', '1985-10-22', 'public\\img\\robert-downey.webp'),
+	(3, 'Nolan', 'christopher', 'Male', '1982-03-08', 'public\\img\\christopher-nolan-dc23745902014fb6ae107bb65a10c384.jpg'),
+	(4, 'Pacino', 'Al', 'Male', '1940-04-25', 'public\\img\\Al-Pacino.webp'),
+	(5, 'De-palma', 'Brian', 'Male', '1940-09-11', 'public\\img\\brian-de-palma.webp'),
+	(6, 'Romijn', 'Rebecca', 'Female', '1972-11-06', 'public\\img\\Rebecca_Romijn.jpg'),
+	(7, 'Travolta', 'John', 'Male', '1954-02-18', 'public\\img\\travolta.jpg'),
+	(8, 'Tarentino', 'Quentin', 'Male', '1963-03-27', 'public\\img\\quentin-tarentino.jpg'),
+	(9, 'Foxx', 'Jamie', 'Male', '1967-12-13', 'public\\img\\jamie-foxx.webp'),
+	(10, 'Damon', 'Matt', 'Female', '1994-07-30', 'public\\img\\christopher-nolan-dc23745902014fb6ae107bb65a10c384.jpg'),
+	(11, 'Thomas', 'William', 'Male', '1983-02-05', 'public\\img\\christopher-nolan-dc23745902014fb6ae107bb65a10c384.jpg'),
+	(12, 'Lee', 'Emily', 'Female', '1996-03-21', 'public\\img\\christopher-nolan-dc23745902014fb6ae107bb65a10c384.jpg'),
+	(13, 'Hernandez', 'Matthew', 'Male', '1992-12-28', 'public\\img\\christopher-nolan-dc23745902014fb6ae107bb65a10c384.jpg'),
+	(14, 'Moore', 'Sophia', 'Female', '1986-08-10', 'public\\img\\christopher-nolan-dc23745902014fb6ae107bb65a10c384.jpg'),
+	(15, 'Jackson', 'Liam', 'Male', '1989-01-07', 'public\\img\\christopher-nolan-dc23745902014fb6ae107bb65a10c384.jpg'),
+	(16, 'Clooney', 'George', 'Female', '1985-10-22', 'public\\img\\Al-Pacino.webp'),
+	(17, 'Pitt', 'Brad', 'Female', '1985-10-22', 'public\\img\\Al-Pacino.webp'),
+	(18, 'Maguire', 'Toby', 'Female', '1985-10-22', 'public\\img\\Al-Pacino.webp'),
+	(40, 'Johanson', 'Scarlet', 'Female', '2023-07-29', 'public\\img\\Al-Pacino.webp');
+
+-- Listage de la structure de table sql_cinema. realisateur
+CREATE TABLE IF NOT EXISTS `realisateur` (
+  `id_auteur` int NOT NULL AUTO_INCREMENT,
+  `id_personne` int NOT NULL,
+  PRIMARY KEY (`id_auteur`),
+  UNIQUE KEY `id_personne` (`id_personne`),
+  CONSTRAINT `realisateur_ibfk_1` FOREIGN KEY (`id_personne`) REFERENCES `personne` (`id_personne`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Listage des données de la table sql_cinema.realisateur : ~5 rows (environ)
+INSERT INTO `realisateur` (`id_auteur`, `id_personne`) VALUES
+	(1, 3),
+	(5, 5),
+	(2, 8),
+	(3, 11),
+	(4, 14);
+
+-- Listage de la structure de table sql_cinema. role
+CREATE TABLE IF NOT EXISTS `role` (
+  `Id_role` int NOT NULL AUTO_INCREMENT,
+  `nom_role` varchar(50) NOT NULL,
+  PRIMARY KEY (`Id_role`)
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Listage des données de la table sql_cinema.role : ~15 rows (environ)
+INSERT INTO `role` (`Id_role`, `nom_role`) VALUES
+	(1, 'Robert Oppenheimer'),
+	(2, 'lewis'),
+	(3, 'Thomas Shelby'),
+	(4, 'Leslie Groves'),
+	(5, 'Tony Montana'),
+	(6, 'Laure, Lily'),
+	(7, 'Vincent Vega'),
+	(8, 'Django'),
+	(9, 'Character I'),
+	(10, 'Character J'),
+	(11, 'Character K'),
+	(12, 'Character L'),
+	(13, 'Character M'),
+	(14, 'Character N'),
+	(15, 'Character O');
+
+/*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
