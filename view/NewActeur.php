@@ -5,41 +5,41 @@ ob_start();
 
 
 
-<div id="parallax_bloc" style="margin-top: 17%;">
+<div id="parallax_bloc" >
         <div id="parallax_background"></div>
         <div id="TextAndBtn_parallax">
                 
-            <div class="titre_page"><h2 style="font-size:2rem">AJOUTER UN ACTEUR</h2><h2 class="point_rouge" style="font-size:4rem">.</h2></div>
+            <div class="titre_page"><h2 class="font-size-header-info-acteur-mobile">AJOUTER UN ACTEUR</h2><h2 class="point_rouge" >.</h2></div>
             <p style="margin-top:-27px;">Consulter le plus tard !</p>
         </div>
 </div>
 <!-- affiche un formulaire qui permet de crée un nouvel acteur et de selectionner les roles qu'il a jouer dans differents films -->
 <form class="formulaire_film" action="/sql-cinema/index.php?action=NvActeur" method="post" enctype="multipart/form-data">
     <p>
-        <label> Nom de l'acteur</label>
+        <label> Nom de l'acteur</label><br>
             <input class='input_acteur' type="text" name="name_acteur" required>
         
     </p>
     <p>
         <label>
-            Prenom du acteur</lavel> 
+            Prenom du acteur</lavel> <br>
             <input class='input_acteur' type="text" name="prenom_acteur" required>
         
     </p>
     <p>
         <label>
-            Sexe
+            Sexe</label> <br>
             <select class='select_film' name="sexe_acteur" required>
                 <option value="female">Femme</option>
                 <option value="male">Homme</option>
             </select>
-        </label>
+        
     </p>
     <p>
         <label >
-            Date de naissance 
+            Date de naissance  </label><br>
             <input class='input_acteur' type="date" name="naissance_acteur" required>
-        </label>
+       
     </p>
         <div class="upload-container">
         <input placeholder="Ajouter un fichier " class='input-file' id="document-upload" type="file" name="image_acteur" required>
@@ -50,10 +50,11 @@ ob_start();
     $roles=$requete2->fetchAll() 
     ?>
     <div id="film_actor_selector">
-        <p class="film_actor_line">
-            <label>
+    <label>
                 cet acteur a jouer <br>
             </label>
+        <p class="film_actor_line">
+           
             <select class='input_acteur select_film' name="roles_acteur[]" >
                 <option value="">None</option>
                 <?php foreach ($roles as $role) { ?>

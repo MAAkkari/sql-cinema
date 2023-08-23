@@ -2,11 +2,11 @@
 ob_start();
 ?>
 
-<div id="parallax_bloc" style="margin-top: 17%;">
+<div id="parallax_bloc" >
         <div id="parallax_background"></div>
         <div id="TextAndBtn_parallax">
                 
-            <div class="titre_page"><h2 style="font-size:2rem">AJOUTER UN FILM</h2><h2 class="point_rouge" style="font-size:4rem">.</h2></div>
+            <div class="titre_page"><h2 class="font-size-header-info-acteur-mobile">AJOUTER UN FILM</h2><h2 class="point_rouge" >.</h2></div>
             <p style="margin-top:-27px;">Consulter le plus tard !</p>
         </div>
 </div>

@@ -11,7 +11,7 @@
 
 
 
-                <div class="titre_page"><h2 style="font-size:1.9rem"> <?= $infRealisateur[0]["prenom_realisateur"]." ".$infRealisateur[0]["nom_realisateur"]  ?> </h2><h2 class="point_rouge" style="font-size:4rem">.</h2></div>
+                <div class="titre_page"><h2 class="font-size-header-info-acteur-mobile"> <?= $infRealisateur[0]["prenom_realisateur"]." ".$infRealisateur[0]["nom_realisateur"]  ?> </h2><h2 class="point_rouge" >.</h2></div>
                 <p style="margin-top:-27px;">TOUTES LES INFORMATIONS ! </p>
             </div>
         </div>

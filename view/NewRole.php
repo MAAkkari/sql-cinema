@@ -2,11 +2,11 @@
 ob_start();
 ?>
 
-<div id="parallax_bloc" style="margin-top: 17%;">
+<div id="parallax_bloc" >
         <div id="parallax_background"></div>
         <div id="TextAndBtn_parallax">
                 
-            <div class="titre_page"><h2 style="font-size:2rem">AJOUTER UN ROLE</h2><h2 class="point_rouge" style="font-size:4rem">.</h2></div>
+            <div class="titre_page"><h2 class="font-size-header-info-acteur-mobile">AJOUTER UN ROLE</h2><h2 class="point_rouge" >.</h2></div>
             <p style="margin-top:-27px;">Consulter le plus tard !</p>
         </div>
 </div>
@@ -14,7 +14,7 @@ ob_start();
 <!-- affiche un formulaire pour ajouter un nouveau role avec les differents acteurs qui ont jouer ce role dans un film -->
 <form class="formulaire_film" action="/sql-cinema/index.php?action=NvRole" method="post"  method="post">
 <p>
-    <label>Nom du role </label>
+    <label>Nom du role </label><br>
     <input class='input_role' type="text" name="nom_role" >
 </p>
 <?php 
@@ -26,8 +26,8 @@ ob_start();
     <p class="film_actor_line">
     
         <label>
-            Role jouer par l'acteur <br>
-        </label>
+            Role jouer par l'acteur 
+        </label><br>
         <select id='input_role1' class='input_role select_film ' name="acteurs_role[]" >
             <option value="">None</option>
             <?php foreach ($acteurs as $acteur) { ?>

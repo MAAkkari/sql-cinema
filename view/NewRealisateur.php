@@ -1,11 +1,11 @@
 <?php 
 ob_start();
 ?>
-<div id="parallax_bloc" style="margin-top: 17%;">
+<div id="parallax_bloc" >
         <div id="parallax_background"></div>
         <div id="TextAndBtn_parallax">
                 
-            <div class="titre_page"><h2 style="font-size:1.5rem">AJOUTER UN REALISATEUR</h2><h2 class="point_rouge" style="font-size:4rem">.</h2></div>
+            <div class="titre_page"><h2 class="font-size-header-info-acteur-mobile">AJOUTER UN REALISATEUR</h2><h2 class="point_rouge" >.</h2></div>
             <p style="margin-top:-27px;">Consulter le plus tard !</p>
         </div>
 </div>
@@ -13,22 +13,22 @@ ob_start();
  <form class="formulaire_film" action="/sql-cinema/index.php?action=NvRealisateur" method="post" enctype="multipart/form-data">
     <p>
         <label> 
-            Nom du realisateur 
+            Nom du realisateur </label> <br>
             <input class='input_acteur' type="text" name="name_realisateur" required>
-        </label>
+        
     </p>
     <p>
         <label>
-            Prenom du realisateur 
+            Prenom du realisateur </lavel><br>
             <input class='input_acteur' type="text" name="prenom_realisateur" required>
-        </lavel>
+        
     </p>
     
     <p>
         <label >
-            Date de naissance 
+            Date de naissance </label><br>
             <input class='input_acteur' type="date" name="naissance_realisateur" required>
-        </label>
+        
     </p>
     
         
@@ -39,12 +39,12 @@ ob_start();
     
     <p>
         <label>
-            Sexe
+            Sexe  </label>
             <select class='input_acteur select_film' name="sexe_realisateur" required>
                 <option value="female">Femme</option>
                 <option value="male">Homme</option>
             </select>
-        </label>
+       
     </p>
     <p>
         <input id="boutton_film" class="boutton_film" type="submit" name="submit" value="Submit !">

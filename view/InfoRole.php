@@ -4,11 +4,11 @@
 ?>
 <main>
 
-<div id="parallax_bloc" style="margin-top: 17%;">
-        <div id="parallax_background2"></div>
+<div id="parallax_bloc" >
+        <div id="parallax_background"></div>
         <div id="TextAndBtn_parallax">
                 
-            <div class="titre_page"><h2 style="font-size:2rem"><?= $roles[0]["personnage"] ?></h2><h2 class="point_rouge" style="font-size:4rem">.</h2></div>
+            <div class="titre_page"><h2 class="font-size-header-info-acteur-mobile" ><?= $roles[0]["personnage"] ?></h2><h2 class="point_rouge" >.</h2></div>
             <p style="margin-top:-27px;">TOUTES LES INFORMATIONS ! </p>
         </div>
 </div>

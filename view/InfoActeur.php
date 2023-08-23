@@ -4,15 +4,15 @@
 ?>
 
     <main> 
-    <div id="parallax_bloc" style="margin-top:17%;">
-            <div id="parallax_background2"></div>
+    <div id="parallax_bloc" >
+            <div id="parallax_background"></div>
             <div id="TextAndBtn_parallax">
 
             <?php if (count($infActeur) > 0) { ?>
 
 
 
-                <div class="titre_page"><h2 style="font-size:1.9rem"> <?= $infActeur[0]["prenom_acteur"]." ".$infActeur[0]["nom_acteur"]  ?> </h2><h2 class="point_rouge" style="font-size:4rem">.</h2></div>
+                <div class="titre_page"><h2 class="font-size-header-info-acteur-mobile"> <?= $infActeur[0]["prenom_acteur"]." ".$infActeur[0]["nom_acteur"]  ?> </h2><h2 class="point_rouge" >.</h2></div>
                 <p style="margin-top:-27px;">TOUTES LES INFORMATIONS ! </p>
             </div>
         </div>
@@ -23,10 +23,10 @@
                 <div class="titre_note"> 
                     <h3> <?= $infActeur[0]["prenom_acteur"]." ".$infActeur[0]["nom_acteur"]  ?></h3> 
                 </div>
-
-            </div> 
-            <p>Néé le :<?= $infActeur[0]["naissance_acteur"]  ?></p>
+                <p>Néé le :<?= $infActeur[0]["naissance_acteur"]  ?></p>
                 <p>Age : <?= $infActeur[0]["age_acteur"] ?> Ans </p>
+            </div> 
+           
                 
                
            </div>
@@ -46,7 +46,7 @@
                         <img src="<?=$acteur['affiche']?>" alt="affiche de <?=$acteur['titre']?>">
                     </a>
                         <div class="Blog_Author_Date">
-                            <a style="color :#F81111;" class="info_film" href="/sql-cinema/index.php?action=infoRole&id=<?= $acteur["Id_role"] ?>"><?= $infActeur[0]["prenom_acteur"]." ".$infActeur[0]["nom_acteur"]  ?> joue <?= $acteur["personnage"]?> dans ce film </a>   
+                            <a style="color :white;" class="info_film" href="/sql-cinema/index.php?action=infoRole&id=<?= $acteur["Id_role"] ?>"><?= $infActeur[0]["prenom_acteur"]." ".$infActeur[0]["nom_acteur"]  ?> joue <span style="color :#F81111;"> <?= $acteur["personnage"]?> </span> dans ce film </a>   
                         </div>
                 </div>
                 <a href="index.php?action=infoFilm&id=<?= $acteur['id_film'] ?>"><?=$acteur['titre']?></a>
