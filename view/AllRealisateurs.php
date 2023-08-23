@@ -1,6 +1,6 @@
 <?php 
     ob_start();
-    session_start(); ?>
+    ?>
 <main>
     <div id="parallax_bloc">
         <div id="parallax_background"></div>
@@ -9,6 +9,14 @@
                 <p>RETROUVER VOS REALISATEURS FAVORIS !</p>
             </div>
     </div> 
+    <?php  
+    if(isset($_SESSION["message"]) && !empty($_SESSION["message"])){?>     
+        <h3 class="message_ajout"><?= $_SESSION["message"][0]   ?></h3>
+        
+    <?php } 
+        $_SESSION["message"]=[];
+    ?>
+
 
         <h2 class="soustitre_homepage"><br> Tout les Réalisateurs </h2>
     <div class="liste_films">
@@ -28,9 +36,17 @@
 
 
 </main>
-
+<script>
+    ocument.addEventListener("DOMContentLoaded", function() {
+    const elementToDisappear = document.querySelector(".message_ajout");
+  
+    setTimeout(function() {
+      elementToDisappear.classList.add("disappear");
+    }, 3000); // 3000 milliseconds (3 seconds) delay
+    });
+</script>
 <?php 
 $title="Liste des Réalisateurs";
-$titre_secondaire="Tout les réalisateurs";
+$titre_secondaire="";
 $contenu = ob_get_clean();
 require_once('template.php');

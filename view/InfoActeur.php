@@ -1,4 +1,4 @@
-<?php session_start();
+<?php 
     ob_start();
     $infActeur=$requete->fetchAll() ;
 ?>
@@ -25,11 +25,23 @@
                 </div>
                 <p>Néé le :<?= $infActeur[0]["naissance_acteur"]  ?></p>
                 <p>Age : <?= $infActeur[0]["age_acteur"] ?> Ans </p>
+                <div class="delete_container">
+        <button onclick="document.querySelector('.overlay2').classList.add('active-overlay') ; document.getElementById('help').classList.add('helpActive')" class="delele_button"> Effacer ce Role </button>
+    </div>
+<div id="help">
+<i class="fa-solid fa-trash"></i>
+    <h3>Etes vous sure de vouloir supprimer Cet acteur ?</h3> <br>
+    <p><span style="color:red">Attention &nbsp;<i class="fa-solid fa-triangle-exclamation"></i> &nbsp;</span>: &nbsp;cette suppression est definitive est supprimeras egalement tout les elements en relation avec lui !</p>
+        <div class="yes_no">
+        <a href="/sql-cinema/index.php?action=DeleteActeur&id=<?= $infActeur[0]["id_personne"] ?>">Oui</a>
+        <button onclick="document.querySelector('.overlay2').classList.remove('active-overlay') ; document.getElementById('help').classList.remove('helpActive')">Non</button>
+        </div>
+</div>
             </div> 
            
                 
                
-           </div>
+           
           
         </div>
         

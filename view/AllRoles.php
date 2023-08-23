@@ -1,6 +1,6 @@
 <?php 
     ob_start();
-    session_start();
+    
 // affiche une liste tout les roles
     ?>
 
@@ -46,6 +46,6 @@
 
 <?php
 $title="Liste des roles";
-$titre_secondaire="Tout les Roles";
+$titre_secondaire="";
 $contenu = ob_get_clean();
 require_once('template.php');

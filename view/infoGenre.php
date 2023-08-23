@@ -13,7 +13,7 @@
         </div>
 </div>
 
-<a class="delele_button"href="/sql-cinema/index.php?action=DeleteGenre&id=<?= $genre[0]["id_genre"] ?>"> Effacer ce Genre </a>
+
 
 <h2 class="soustitre_homepage"><br> Film du genre <?= $genre[0]["libelle"] ?> </h2>
     <div class="liste_films">
@@ -37,7 +37,18 @@
 
         <?php } ?>
     </div>
-
+    <div class="delete_container">
+        <button onclick="document.querySelector('.overlay2').classList.add('active-overlay') ; document.getElementById('help').classList.add('helpActive')" class="delele_button"> Effacer ce Role </button>
+    </div>
+<div id="help">
+<i class="fa-solid fa-trash"></i>
+    <h3>Etes vous sure de vouloir supprimer Ce Genre ?</h3> <br>
+    <p><span style="color:red">Attention &nbsp;<i class="fa-solid fa-triangle-exclamation"></i> &nbsp;</span>: &nbsp;cette suppression est definitive est supprimeras egalement tout les elements en relation avec lui !</p>
+        <div class="yes_no">
+        <a href="/sql-cinema/index.php?action=DeleteGenre&id=<?= $genre[0]["id_genre"] ?>">Oui</a>
+        <button onclick="document.querySelector('.overlay2').classList.remove('active-overlay') ; document.getElementById('help').classList.remove('helpActive')">Non</button>
+        </div>
+</div>
 
 
 

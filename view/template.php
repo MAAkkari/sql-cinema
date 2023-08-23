@@ -52,7 +52,7 @@
         </ul>
     </nav>
     <div class="overlay"></div>
-
+    <div class="overlay2"></div>
     <script>
         document.getElementById("burger_btn").addEventListener("click", function(event) {
         event.stopPropagation();

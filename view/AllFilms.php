@@ -122,7 +122,7 @@
 
 <?php
 $title="Liste des Films";
-$titre_secondaire="liste des Films";
+$titre_secondaire="";
 $contenu = ob_get_clean();
 require_once('template.php');
 

@@ -51,6 +51,15 @@ body{
       background-color:#A61212;
       border-radius: 10px;
       width:fit-content;
+      color:white;
+      font-weight: bold;
+      border:none;
+      font-size: 1.2rem;
+      
+    }
+    .delete_container{
+      display: flex;
+      justify-content: center;
     }
 
     .left{animation:  rotateAnimation2 0.5s forwards;}
@@ -104,6 +113,20 @@ body{
         opacity: 0.80;
         visibility: visible;
       }
+      .overlay2 {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        background-color: #171d22;
+        z-index: 1; 
+        transition: all 700ms ease-in-out;
+        visibility: hidden;
+    }
+    
+    
     nav{
         width: fit-content;
         position:fixed;
@@ -176,6 +199,75 @@ body{
     }
    
     
+    #help{
+      position: fixed;
+      top:25%;
+      left: 10%;
+      
+      text-align: center;
+      background-color: #1f1d1d;
+      border-radius: 5px ;
+      padding: 40px 50px ;
+      width: 30%;
+      height: fit-content;
+      color:white;
+      display:none;
+      z-index: 100;
+      border: 2px ;
+      text-align: center;
+      display:none;
+      border: 1px solid black;
+      box-shadow: 0px 0px 10px black;
+      min-width: 300px;
+      
+    }
+    #help .fa-trash{
+      font-size:3rem;
+      margin-bottom: 20px;
+    }
+    #help div{
+      display:flex;
+      justify-content: space-around;
+      margin-top: 20px;
+    }
+    #help span{
+      font-weight: 800;
+    }
+#help p{
+  width:80%;
+  text-align: center;
+}
+    #help a{
+      background-color: #c41010;
+      padding :10px 20px;
+      border-radius: 5px;
+      font-size: 1.2rem;
+      color:white;
+      width:30%;
+      font-weight: 600;
+    }
+
+    #help button{
+      background-color: #26800a;
+      padding :10px 20px;
+      border-radius: 5px;
+      border:none;
+      font-size: 1.2rem;
+      color:white;
+      width:30%;
+      font-weight: 600;
+    }
+
+    .helpActive{
+      display: flex !important;
+      flex-direction: column;
+      align-items: center;
+    }
+    .yes_no{
+      width:100%;
+    }
+
+
 
     /* ---------------------footer------------------------- */
     footer{
@@ -1165,7 +1257,9 @@ cursor:pointer;
   font-weight: 700;
   margin-bottom: 30px;
 }
-
+#help{
+  left:35%
+}
 .info_panorama a{
   color: #FFF;
   text-align: center;
@@ -1858,5 +1952,13 @@ transition: all 0.3s ease-in-out;
 background-color: #A61212;
 transform: translateY(-10px);
 }
+
+
+
+
+
+
+
+
 
 }

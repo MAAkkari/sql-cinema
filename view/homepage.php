@@ -1,6 +1,6 @@
 <?php 
 ob_start();
-session_start();
+
 $film=$requete->fetchAll();
 ?>
 <main> 

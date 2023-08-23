@@ -1,4 +1,4 @@
-<?php session_start();
+<?php 
     ob_start();
     $infRealisateur=$requete->fetchall() ;
 ?>
@@ -24,12 +24,24 @@
                 </div>
                 <p>Néé le :<?php echo $infRealisateur[0]["naissance_realisateur"]  ?></p>
                 <p>Age : <?php echo $infRealisateur[0]["age_realisateur"]  ?> Ans </p>
+                <div class="delete_container">
+        <button onclick="document.querySelector('.overlay2').classList.add('active-overlay') ; document.getElementById('help').classList.add('helpActive')" class="delele_button"> Effacer ce Role </button>
+    </div>
+<div id="help">
+<i class="fa-solid fa-trash"></i>
+    <h3>Etes vous sure de vouloir supprimer Ce Realisateur ?</h3> <br>
+    <p><span style="color:red">Attention &nbsp;<i class="fa-solid fa-triangle-exclamation"></i> &nbsp;</span>: &nbsp;cette suppression est definitive est supprimeras egalement tout les elements en relation avec lui !</p>
+        <div class="yes_no">
+        <a href="/sql-cinema/index.php?action=DeleteRealisateur&id=<?= $infRealisateur[0]["id_personne"] ?>">Oui</a>
+        <button onclick="document.querySelector('.overlay2').classList.remove('active-overlay') ; document.getElementById('help').classList.remove('helpActive')">Non</button>
+        </div>
+</div>
             </div> 
            
                 
                
            </div>
-          style
+        
         </div>
         
           
@@ -99,46 +111,6 @@
 </script>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      
 <?php 
 $title="Information du réalisateur";
 $titre_secondaire="";

@@ -10,7 +10,7 @@ $ctrlCinema = new CinemaController();
 // crée un switch qui permet de choisir quelle fonction du controller appeler en fonction de l'action
 if (isset($_GET["action"])) {
     switch ($_GET["action"]){
-
+        
         case "ListeFilms" : $ctrlCinema->ListeFilms() ; break;
         case "ListeRealisateurs" : $ctrlCinema->ListeRealisateurs(); break;
         case "ListeActeurs" : $ctrlCinema->ListeActeurs(); break;
@@ -34,6 +34,8 @@ if (isset($_GET["action"])) {
         case "DeleteFilm":$ctrlCinema->DeleteFilm($_GET["id"]);break;
         case "DeleteRole":$ctrlCinema->DeleteRole($_GET["id"]);break;
         case "DeleteGenre":$ctrlCinema->DeleteGenre($_GET["id"]);break;
+        case "DeleteActeur":$ctrlCinema->DeleteActeur($_GET["id"]);break;
+        case "DeleteRealisateur":$ctrlCinema->DeleteRealisateur($_GET["id"]);break;
     }
 } else {
     $ctrlCinema->ListeFilms() ;

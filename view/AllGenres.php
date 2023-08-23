@@ -1,6 +1,6 @@
 <?php 
     ob_start();
-    session_start();
+    
     ?>
     <div id="parallax_bloc">
         <div id="parallax_background"></div>
@@ -39,6 +39,6 @@
 
 <?php
 $title="Liste des genres";
-$titre_secondaire="Tout les genres";
+$titre_secondaire="";
 $contenu = ob_get_clean();
 require_once('template.php');

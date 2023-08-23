@@ -49,8 +49,9 @@ ob_start();
        
     </p>
         <div class="upload-container">
-        <input placeholder="Ajouter un fichier " class='input-file' id="document-upload" type="file" name="image_acteur" required>
+        <input onchange="updateFileName(this)" placeholder="Ajouter un fichier " class='input-file' id="document-upload" type="file" name="image_acteur" required>
             <label for="document-upload" class="upload-button">Ajouter une Photo</label>
+            <span style="color:white;" id="file-name"></span>
         </div>
     <?php 
     $films=$requete1->fetchAll() ;
@@ -102,6 +103,25 @@ bouton_nv_ligne.addEventListener("click" , function() {
       elementToDisappear.classList.add("disappear");
     }, 3000); // 3000 milliseconds (3 seconds) delay
   });
+ 
+
+function updateFileName(input) {
+
+    const fileNameSpan = document.getElementById("file-name");
+
+    if (input.files.length > 0) {
+
+        fileNameSpan.textContent = input.files[0].name;
+
+    } else {
+
+        fileNameSpan.textContent = "";
+
+    }
+
+}
+
+
 </script>
 
 <?php

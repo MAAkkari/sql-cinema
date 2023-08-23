@@ -93,10 +93,10 @@ class CinemaController {
         $pdo= connect:: seConnecter();
         $requete= $pdo->prepare( "SELECT personne.photo AS 'photo' ,(YEAR(CURRENT_DATE)-YEAR(personne.date_naissance)) AS 'age_realisateur',film.titre_film AS 'titre',film.année_sortie_fr AS 'annee', film.affiche, film.id_film,
         personne.nom AS 'nom_realisateur', personne.prenom AS 'prenom_realisateur',
-        personne.sexe AS 'sexe_realisateur',personne.date_naissance AS 'naissance_realisateur' FROM film
+        personne.sexe AS 'sexe_realisateur',personne.date_naissance AS 'naissance_realisateur', personne.id_personne FROM  film
         INNER JOIN realisateur ON realisateur.id_auteur = film.id_auteur
         INNER JOIN personne ON personne.id_personne = realisateur.id_personne
-        WHERE realisateur.id_auteur = :id");
+        WHERE realisateur.id_auteur = :id ");
         $requete->execute(["id"=>$id]);
         require "view/infoRealisateur.php";
     }
@@ -104,7 +104,7 @@ class CinemaController {
     //recupere les informations de l'acteur et de ses films
     public function infoActeur($id){
         $pdo = connect::seConnecter();
-        $requete = $pdo-> prepare("SELECT  film.titre_film AS 'titre',film.id_film,film.année_sortie_fr AS 'annee',film.affiche,
+        $requete = $pdo-> prepare("SELECT acteur_personne.id_personne, film.titre_film AS 'titre',film.id_film,film.année_sortie_fr AS 'annee',film.affiche,
         role.nom_role AS 'personnage', acteur_personne.nom AS 'nom_acteur', acteur_personne.prenom AS 'prenom_acteur',
         acteur_personne.sexe AS 'sexe_acteur', acteur_personne.date_naissance AS 'naissance_acteur', role.Id_role,
         acteur_personne.photo,(YEAR(CURRENT_DATE)-YEAR(acteur_personne.date_naissance)) AS 'age_acteur' 
@@ -518,6 +518,7 @@ class CinemaController {
         $_SESSION["message"][]="Role supprimer avec Succes";
         header("Location:index.php?action=ListeRoles");
         }
+
     public function DeleteGenre($id){
         $pdo = connect::seConnecter(); 
         $requete = $pdo->prepare("DELETE FROM genre WHERE id_genre = $id ");
@@ -525,16 +526,54 @@ class CinemaController {
         $_SESSION["message"][]="Genre supprimer avec Succes";
         header("Location:index.php?action=ListeGenres");
         }
+
     public function DeleteActeur($id){
         $pdo = connect::seConnecter(); 
-        $requete = $pdo->prepare("DELETE FROM  WHERE id_genre = $id ");
-        $requete->execute();
+        $requete1 = $pdo->prepare("DELETE FROM jouer WHERE id_acteur= 
+            (SELECT id_acteur FROM acteur WHERE id_personne = 
+                ( SELECT id_personne FROM personne WHERE id_personne = $id ))");
+        $requete1->execute();
+        $requete2 = $pdo->prepare("DELETE FROM acteur WHERE id_personne = $id");
+        $requete2->execute();
+        $requete3 = $pdo->prepare("DELETE FROM personne WHERE id_personne = $id");
+        $requete3->execute();
+
+
+
         $_SESSION["message"][]="Acteur supprimer avec Succes";
         header("Location:index.php?action=ListeActeurs");
         }
-    public function DeleteRealisateur($id){
 
-    }
+    public function DeleteRealisateur($id){
+        $pdo = connect::seConnecter(); 
+        $requete1 = $pdo->prepare("DELETE FROM appartenir WHERE id_film IN 
+        (SELECT id_film FROM film WHERE id_auteur IN 
+        (SELECT id_auteur FROM realisateur WHERE id_personne =
+        (SELECT id_personne FROM personne WHERE id_personne = $id ) ) )");
+        $requete1->execute();
+
+        $requete2 = $pdo->prepare("DELETE FROM jouer WHERE id_film IN 
+        (SELECT id_film FROM film WHERE id_auteur IN 
+        (SELECT id_auteur FROM realisateur WHERE id_personne =
+        (SELECT id_personne FROM personne WHERE id_personne = $id ) ) )");
+        $requete2->execute();
+
+        $requete3 = $pdo->prepare("DELETE FROM film WHERE id_auteur IN 
+        (SELECT id_auteur FROM realisateur WHERE id_personne =
+        (SELECT id_personne FROM personne WHERE id_personne = $id ) ) ");
+        $requete3->execute();
+
+        $requete4 = $pdo->prepare("DELETE FROM realisateur WHERE id_personne = $id");
+        $requete4->execute();
+
+        $requete5 = $pdo->prepare("DELETE FROM personne WHERE id_personne = $id");
+        $requete5->execute();
+
+        $_SESSION["message"][]="Realisateur supprimer avec Succes";
+        header("Location:index.php?action=ListeRealisateurs");
+
+        }
+    
     
     
 
