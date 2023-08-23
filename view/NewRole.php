@@ -10,6 +10,13 @@ ob_start();
             <p style="margin-top:-27px;">Consulter le plus tard !</p>
         </div>
 </div>
+<?php  
+    if(isset($_SESSION["message"]) && !empty($_SESSION["message"])){?>     
+        <h3 class="message_ajout"><?= $_SESSION["message"][0]   ?></h3>
+        
+    <?php } 
+        $_SESSION["message"]=[];
+    ?>
 
 <!-- affiche un formulaire pour ajouter un nouveau role avec les differents acteurs qui ont jouer ce role dans un film -->
 <form class="formulaire_film" action="/sql-cinema/index.php?action=NvRole" method="post"  method="post">
@@ -58,6 +65,13 @@ bouton_nv_ligne.addEventListener("click" , function() {
     const new_ligne_ajout = ligne_ajout.cloneNode(true)
     film_actor_selector.appendChild(new_ligne_ajout)
     }) ;
+    document.addEventListener("DOMContentLoaded", function() {
+    const elementToDisappear = document.querySelector(".message_ajout");
+  
+    setTimeout(function() {
+      elementToDisappear.classList.add("disappear");
+    }, 3000); // 3000 milliseconds (3 seconds) delay
+  });
 </script>
 <?php
 $title="Nouveau Role";

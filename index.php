@@ -5,7 +5,7 @@ use controller\CinemaController;
 spl_autoload_register(function($className){
     include $className . '.php';
 });
-
+session_start();
 $ctrlCinema = new CinemaController();
 // crée un switch qui permet de choisir quelle fonction du controller appeler en fonction de l'action
 if (isset($_GET["action"])) {
@@ -31,6 +31,9 @@ if (isset($_GET["action"])) {
         case "NvActeur_Liste_FilmRole":$ctrlCinema->NvActeur_Liste_FilmRole();break;
         case "NvFilm_Liste_RealisateurGenres":$ctrlCinema->NvFilm_Liste_RealisateurGenres();break;
         case "FilmsHomePage":$ctrlCinema->FilmsHomePage();break;
+        case "DeleteFilm":$ctrlCinema->DeleteFilm($_GET["id"]);break;
+        case "DeleteRole":$ctrlCinema->DeleteRole($_GET["id"]);break;
+        case "DeleteGenre":$ctrlCinema->DeleteGenre($_GET["id"]);break;
     }
 } else {
     $ctrlCinema->ListeFilms() ;

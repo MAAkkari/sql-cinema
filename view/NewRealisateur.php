@@ -9,6 +9,13 @@ ob_start();
             <p style="margin-top:-27px;">Consulter le plus tard !</p>
         </div>
 </div>
+<?php  
+    if(isset($_SESSION["message"]) && !empty($_SESSION["message"])){?>     
+        <h3 class="message_ajout"><?= $_SESSION["message"][0]   ?></h3>
+        
+    <?php } 
+        $_SESSION["message"]=[];
+    ?>
 <!-- formulaire pour ajouter un nouveau realisateur -->
  <form class="formulaire_film" action="/sql-cinema/index.php?action=NvRealisateur" method="post" enctype="multipart/form-data">
     <p>
@@ -51,7 +58,13 @@ ob_start();
     </p>
     
  </form>
-        
+        <script>document.addEventListener("DOMContentLoaded", function() {
+    const elementToDisappear = document.querySelector(".message_ajout");
+  
+    setTimeout(function() {
+      elementToDisappear.classList.add("disappear");
+    }, 3000); // 3000 milliseconds (3 seconds) delay
+  });</script>
 <?php
 $title="Nouveau Réalisateur";
 $titre_secondaire="";

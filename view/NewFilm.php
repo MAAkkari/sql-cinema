@@ -10,7 +10,15 @@ ob_start();
             <p style="margin-top:-27px;">Consulter le plus tard !</p>
         </div>
 </div>
+<?php  
+    if(isset($_SESSION["message"]) && !empty($_SESSION["message"])){?>     
+        <h3 class="message_ajout"><?= $_SESSION["message"][0]   ?></h3>
+        
+    <?php } 
+        $_SESSION["message"]=[];
+    ?>
 
+ 
 <!-- affiche un forumlaire pour ajouter un film et ses genre et realisateur -->
  <form class="formulaire_film" action="/sql-cinema/index.php?action=NvFilm" method="post" enctype="multipart/form-data">
     <p>
@@ -82,6 +90,7 @@ ob_start();
  </form>
 
 
+
 <script>
     const div = document.getElementById("film_actor_selector")
     const ligne_ajout = document.querySelector(".film_actor_line")
@@ -91,6 +100,14 @@ bouton_nv_ligne.addEventListener("click" , function() {
     const new_ligne_ajout = ligne_ajout.cloneNode(true)
     film_actor_selector.appendChild(new_ligne_ajout)
     });
+
+    document.addEventListener("DOMContentLoaded", function() {
+    const elementToDisappear = document.querySelector(".message_ajout");
+  
+    setTimeout(function() {
+      elementToDisappear.classList.add("disappear");
+    }, 3000); // 3000 milliseconds (3 seconds) delay
+  });
 </script>
 
 <?php

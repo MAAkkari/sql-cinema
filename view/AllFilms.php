@@ -14,6 +14,14 @@
             </div>
         </div>
 
+        <?php  
+    if(isset($_SESSION["message"]) && !empty($_SESSION["message"])){?>     
+        <h3 class="message_ajout"><?= $_SESSION["message"][0]   ?></h3>
+        
+    <?php } 
+        $_SESSION["message"]=[];
+    ?>
+
         <!-- second carousel  -->
   <h2 class="soustitre_homepage"><br> Derniers Sorties</h2>
   <div class="containerCaousel2">
@@ -73,6 +81,13 @@
     carousel2.addEventListener("mouseleave", dragStop);
     carousel2.addEventListener("touchend", dragStop);
 
+    document.addEventListener("DOMContentLoaded", function() {
+    const elementToDisappear = document.querySelector(".message_ajout");
+  
+    setTimeout(function() {
+      elementToDisappear.classList.add("disappear");
+    }, 3000); // 3000 milliseconds (3 seconds) delay
+  });
 </script>
 
 <h2 class="soustitre_homepage"><br> Tout les Films </h2>

@@ -9,6 +9,14 @@
                 <p>RETROUVER VOS GENRES FAVORIS !</p>
             </div>
     </div> 
+
+    <?php  
+    if(isset($_SESSION["message"]) && !empty($_SESSION["message"])){?>     
+        <h3 class="message_ajout"><?= $_SESSION["message"][0]   ?></h3>
+        
+    <?php } 
+        $_SESSION["message"]=[];
+    ?>
     <h2 class="soustitre2_homepage">Tout Les genres Genres</h2>
 
 
@@ -19,17 +27,15 @@
     <?php } ?> 
 </div>
 
-
-
-
-
-
-
-
-
-
-
  </main> 
+ <script>
+    document.addEventListener("DOMContentLoaded", function() {
+    const elementToDisappear = document.querySelector(".message_ajout");
+    setTimeout(function() {
+      elementToDisappear.classList.add("disappear");
+    }, 3000); // 3000 milliseconds (3 seconds) delay
+  });
+</script>
 
 <?php
 $title="Liste des genres";

@@ -46,6 +46,13 @@ body{
         
         
     }
+    .delele_button{
+      padding:10px 15px;
+      background-color:#A61212;
+      border-radius: 10px;
+      width:fit-content;
+    }
+
     .left{animation:  rotateAnimation2 0.5s forwards;}
     .right{animation:  rotateAnimation 0.5s forwards;}
     @keyframes rotateAnimation {
@@ -167,6 +174,7 @@ body{
     button{
       cursor:pointer;
     }
+   
     
 
     /* ---------------------footer------------------------- */
@@ -669,7 +677,7 @@ body{
 .synopsis_casting {
   margin: 0 auto;
   width:60%;
-  height: 100%;
+  height: 60px;
   position: relative;
   margin-bottom: 20px;
   text-align: center;
@@ -1622,9 +1630,6 @@ border: none;
 color: white;
 min-height: 45px;
 height: 55px;
-
-
-
 }
 
 .actif {
@@ -1648,6 +1653,7 @@ height: 100%;
 position: relative;
 margin-bottom: 20px;
 justify-content: center;
+height: 60px;
 
 }
 .red_line{
@@ -1680,6 +1686,15 @@ color : #E30000;
 } 
 .casting{
 display:none;
+}
+.message_ajout{
+  text-align: center;
+  color:white;
+  margin-top: -20px;
+  transition:all 3s ease;
+}
+.disappear {
+  opacity: 0;
 }
 
 .formulaire_film{

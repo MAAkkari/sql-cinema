@@ -9,6 +9,13 @@ ob_start();
             <p style="margin-top:-27px;">Consulter le plus tard !</p>
         </div>
 </div>
+<?php  
+    if(isset($_SESSION["message"]) && !empty($_SESSION["message"])){?>     
+        <h3 class="message_ajout"><?= $_SESSION["message"][0]   ?></h3>
+        
+    <?php } 
+        $_SESSION["message"]=[];
+    ?>
 <!-- affiche un formulaire pour ajouter un nouveau genre avec les differents films qui sont de ce genre -->
  <form class="formulaire_film" action="/sql-cinema/index.php?action=NvGenre" method="post" >
     <p>
@@ -32,6 +39,14 @@ ob_start();
     <p>
         <input id ="boutton_film" class="boutton_film" type="submit" name="submit" value="Ajouter le Genre">
     </p>
+
+    <script>document.addEventListener("DOMContentLoaded", function() {
+    const elementToDisappear = document.querySelector(".message_ajout");
+  
+    setTimeout(function() {
+      elementToDisappear.classList.add("disappear");
+    }, 3000); // 3000 milliseconds (3 seconds) delay
+  });</script>
 
 <?php
 $title="Nouveau genre";

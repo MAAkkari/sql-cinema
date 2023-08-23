@@ -5,7 +5,7 @@
 <?php $inffilm=$requete1->fetch() ;
 $genres = explode(';', $inffilm['genres_details']);
 ?>
-<!-- style="margin-top: 17%;" -->
+
     <div id="parallax_bloc" >
             <div id="parallax_background"></div>
             <div id="TextAndBtn_parallax">
@@ -14,7 +14,6 @@ $genres = explode(';', $inffilm['genres_details']);
                 <p style="margin-top:-27px;">TOUTES LES INFORMATIONS ! </p>
             </div>
         </div>
-    
 
         <div class="details_and_picture">
             <img src= " <?= $inffilm["affiche"] ; ?> " alt="">
@@ -46,6 +45,7 @@ $genres = explode(';', $inffilm['genres_details']);
                         ?> <a class="info_film2" href="/sql-cinema/index.php?action=infoGenre&id=<?php echo $genre_id ?>"><?php echo $genre_nom. "&nbsp &nbsp" ?> </a>
                     <?php } ?> 
                 </div>
+                <a class="delele_button"href="/sql-cinema/index.php?action=DeleteFilm&id=<?= $inffilm["id_film"] ?>"> Effacer ce film </a>
            </div>
           
         </div>
@@ -58,6 +58,7 @@ $genres = explode(';', $inffilm['genres_details']);
         </div>
 
         <div class="synopsis_container">
+             
             <p class="casting_synopsis_p synopsis"> <?= $inffilm["synopsis"] ?> </p>
         </div>
 

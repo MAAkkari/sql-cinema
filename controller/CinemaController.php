@@ -134,7 +134,7 @@ class CinemaController {
     //recupere les informations du role et de ses films
     public function infoRole($id){
         $pdo = connect :: seConnecter();
-        $requete = $pdo->prepare("SELECT acteur.id_acteur, film.titre_film AS 'titre',film.id_film,film.année_sortie_fr AS 'annee',film.affiche,
+        $requete = $pdo->prepare("SELECT role.id_role, acteur.id_acteur, film.titre_film AS 'titre',film.id_film,film.année_sortie_fr AS 'annee',film.affiche,
         role.nom_role AS 'personnage', acteur_personne.nom AS 'nom_acteur', acteur_personne.prenom AS 'prenom_acteur',
         acteur_personne.sexe AS 'sexe_acteur', acteur_personne.date_naissance AS 'naissance_acteur' FROM film
         INNER JOIN jouer ON jouer.id_film = film.id_film
@@ -192,8 +192,11 @@ class CinemaController {
             SELECT personne.id_personne FROM personne WHERE personne.nom = '$nom_realisateur' AND personne.prenom = '$prenom_realisateur'");
             $requete1->execute();
             $requete2->execute();
+
+            $_SESSION["message"][]="Ajout du Genre $prenom_realisateur $nom_realisateur avec succes !";
             header("Location: /sql-cinema/view/NewRealisateur.php");
         }
+        header("Location: /sql-cinema/view/NewRealisateur.php");
     }
     //crée un nouveau genre
     public function NvGenre(){
@@ -235,6 +238,8 @@ class CinemaController {
                 $pdo = Connect :: seConnecter();
                 $requete1 = $pdo->query("INSERT INTO genre ( libelle ) VALUES ('$libelle') ;");
             }
+            $_SESSION["message"][]="Ajout du Genre $libelle avec succes !";
+            header("Location:/sql-cinema/index.php?action=NvGenre_Liste_Film");
         }
     
         header("Location:/sql-cinema/index.php?action=NvGenre_Liste_Film");
@@ -297,6 +302,8 @@ class CinemaController {
                     (SELECT id_role FROM role WHERE role.nom_role = '$nom_role')");
                 }
             }
+            $_SESSION["message"][]="Ajout du role $nom_role avec succes !";
+            header("Location:/sql-cinema/index.php?action=NvRole_Liste_FilmActeur");
         }
         header("Location:/sql-cinema/index.php?action=NvRole_Liste_FilmActeur");
     }
@@ -401,6 +408,9 @@ class CinemaController {
             $requete1->execute();
             $requete2->execute();
             $requete3->execute();
+
+        $_SESSION["message"][]="Ajout de l'acteur $prenom_acteur $nom_acteur avec succes !";
+        header("Location:/sql-cinema/index.php?action=NvActeur_Liste_FilmRole");
         }
     header("Location:/sql-cinema/index.php?action=NvActeur_Liste_FilmRole");
     }
@@ -425,7 +435,7 @@ class CinemaController {
         $realisateur = filter_input(INPUT_POST,"realisateur_film", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         //sanitize du synopsis si il existe
-        if(!isset($_POST["synopsis"])|| empty($_POST["synopsis"])){
+        if(isset($_POST["synopsis"]) && !empty($_POST["synopsis"])){
             $synopsis = filter_input(INPUT_POST,"synopsis", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         }
         else ($synopsis ="");
@@ -464,7 +474,7 @@ class CinemaController {
                 $TableCheckGenres = false;
                 break; 
             }
-            else{ $TableCheckGenres =true ;}
+            else{ $TableCheckGenres = true ;}
         }
         //si tout les champs sont rempli alors on execute la requete d'insertion dans la base de donnée
         if ($titre && $duree && $sortie && $note && $realisateur && $fileName){
@@ -480,7 +490,53 @@ class CinemaController {
             $requete2 = $pdo->prepare("INSERT INTO appartenir (id_film, id_genre)
             VALUES ((SELECT film.id_film FROM film WHERE titre_film = '$titre'),(SELECT genre.id_genre FROM genre WHERE libelle = '$genre'))");
             $requete2->execute();
+
+           
         }
+        $_SESSION["message"][]="Ajout du film $titre avec succes !";
+        header("Location:index.php?action=NvFilm_Liste_RealisateurGenres");
         }
     }
+
+
+    public function DeleteFilm($id){
+        $pdo = connect::seConnecter(); 
+        $requete1 = $pdo->prepare("DELETE FROM appartenir WHERE id_film = $id ");
+        $requete1->execute();
+        $requete2 = $pdo->prepare("DELETE FROM jouer WHERE id_film = $id ");
+        $requete2->execute();
+        $requete3 = $pdo->prepare("DELETE FROM film WHERE id_film = $id ");
+        $requete3->execute();
+        $_SESSION["message"][]="Film supprimer avec Succes";
+        header("Location:index.php?action=ListeFilms");
+        }
+
+    public function DeleteRole($id){
+        $pdo = connect::seConnecter(); 
+        $requete = $pdo->prepare("DELETE FROM role WHERE id_role = $id ");
+        $requete->execute();
+        $_SESSION["message"][]="Role supprimer avec Succes";
+        header("Location:index.php?action=ListeRoles");
+        }
+    public function DeleteGenre($id){
+        $pdo = connect::seConnecter(); 
+        $requete = $pdo->prepare("DELETE FROM genre WHERE id_genre = $id ");
+        $requete->execute();
+        $_SESSION["message"][]="Genre supprimer avec Succes";
+        header("Location:index.php?action=ListeGenres");
+        }
+    public function DeleteActeur($id){
+        $pdo = connect::seConnecter(); 
+        $requete = $pdo->prepare("DELETE FROM  WHERE id_genre = $id ");
+        $requete->execute();
+        $_SESSION["message"][]="Acteur supprimer avec Succes";
+        header("Location:index.php?action=ListeActeurs");
+        }
+    public function DeleteRealisateur($id){
+
+    }
+    
+    
+
+
 }

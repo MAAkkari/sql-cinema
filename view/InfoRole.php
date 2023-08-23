@@ -13,7 +13,7 @@
         </div>
 </div>
 
-
+ <a class="delele_button"href="/sql-cinema/index.php?action=DeleteRole&id=<?= $roles[0]["id_role"] ?>"> Effacer ce Role </a>
 <h2 class="soustitre_homepage"><br> Ce role est interpreter par </h2>
     <div class="liste_films" >
         <?php foreach ( $roles as $role) { ?> 

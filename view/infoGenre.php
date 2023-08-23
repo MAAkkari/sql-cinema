@@ -13,6 +13,7 @@
         </div>
 </div>
 
+<a class="delele_button"href="/sql-cinema/index.php?action=DeleteGenre&id=<?= $genre[0]["id_genre"] ?>"> Effacer ce Genre </a>
 
 <h2 class="soustitre_homepage"><br> Film du genre <?= $genre[0]["libelle"] ?> </h2>
     <div class="liste_films">
