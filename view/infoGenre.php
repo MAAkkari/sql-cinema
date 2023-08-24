@@ -37,8 +37,9 @@
 
         <?php } ?>
     </div>
-    <div class="delete_container">
-        <button onclick="document.querySelector('.overlay2').classList.add('active-overlay') ; document.getElementById('help').classList.add('helpActive')" class="delele_button"> Effacer ce Role </button>
+    <div class="delete_container2">
+        <a class="edit_btn" href="/sql-cinema/index.php?action=EditGenreInfo&id=<?= $genre[0]["id_genre"] ?>">Modifier ce Genre</a>
+        <button onclick="document.querySelector('.overlay2').classList.add('active-overlay') ; document.getElementById('help').classList.add('helpActive')" class="delele_button"> Effacer ce Genre </button>
     </div>
 <div id="help">
 <i class="fa-solid fa-trash"></i>

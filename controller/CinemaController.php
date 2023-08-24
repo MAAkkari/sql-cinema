@@ -574,8 +574,237 @@ class CinemaController {
 
         }
     
+        public function EditFilmInfo($id){
+        
+        $pdo = connect::seConnecter(); 
+        $requete1 = $pdo->query("SELECT CONCAT(personne.prenom,' ',personne.nom ) AS nom_complet FROM personne
+        INNER JOIN realisateur ON realisateur.id_personne = personne.id_personne");
+        $requete2 = $pdo->query("SELECT genre.libelle from genre "); 
+        $requete3= $pdo->prepare("SELECT 
+        film.id_film,
+        film.titre_film AS 'titre', 
+        film.année_sortie_fr AS 'annee', 
+        film.durée_minute AS 'duree', 
+        film.affiche, 
+        film.note, 
+        film.synopsis,
+        film.id_auteur AS 'id_realisateur' ,
+        realisateur_personne.nom AS 'nom_realisateur', 
+        realisateur_personne.prenom AS 'prenom_realisateur',
+        realisateur_personne.sexe AS 'sexe_realisateur',
+        realisateur_personne.date_naissance AS 'naissance_realisateur',
+        GROUP_CONCAT(DISTINCT CONCAT(genre.id_genre, ':', genre.libelle) SEPARATOR ';') AS 'genres_details'
+        FROM film
+        INNER JOIN realisateur ON realisateur.id_auteur = film.id_auteur
+        INNER JOIN personne AS realisateur_personne ON realisateur_personne.id_personne = realisateur.id_personne
+        INNER JOIN appartenir ON appartenir.id_film = film.id_film
+        INNER JOIN genre ON genre.id_genre = appartenir.id_genre
+        LEFT JOIN jouer ON jouer.id_film = film.id_film
+        WHERE film.id_film = :id
+        GROUP BY film.id_film");
+        
+        $requete4 = $pdo->prepare("SELECT film.id_film, acteur_personne.nom AS nom_acteur , acteur_personne.prenom AS prenom_acteur, acteur_personne.sexe AS sexe_acteur 
+        , acteur_personne.date_naissance AS acteur_naissance , acteur.id_acteur AS id_acteur , role.Id_role AS id_role , role.nom_role AS nom_role
+         FROM film
+         INNER JOIN jouer ON jouer.id_film = film.id_film
+         INNER JOIN acteur ON acteur.id_acteur = jouer.id_acteur
+         INNER JOIN personne AS acteur_personne ON acteur_personne.id_personne = acteur.id_personne
+         INNER JOIN role ON role.Id_role = jouer.Id_role
+         WHERE film.id_film = :id");
+        $requete3->execute(["id"=>$id]);
+        $requete4 -> execute(["id"=>$id]);
+
+        require "view/EditFilm.php";
+    }
+
+
+
+    public function EditFilm($id){
+    $pdo = connect::seConnecter(); 
+
+    $requeteAffiche = $pdo->query("SELECT affiche FROM film WHERE id_film=$id"); 
+    $afficheActuelle = $requeteAffiche->fetch();
+     //sanitize des informations
+     $titre = filter_input(INPUT_POST,"titre", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+     $duree = filter_input(INPUT_POST,"duree", FILTER_VALIDATE_INT);
+     $note = filter_input(INPUT_POST,"note", FILTER_VALIDATE_INT);
+     $sortie = filter_input(INPUT_POST, "sortie",  FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+     $realisateur = filter_input(INPUT_POST,"realisateur_film", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+     //sanitize du synopsis si il existe
+     if(isset($_POST["synopsis"]) && !empty($_POST["synopsis"])){
+         $synopsis = filter_input(INPUT_POST,"synopsis", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+     }
+     else ($synopsis ="");
+
+    if(isset($_FILES["affiche"]) && !empty ($_FILES["affiche"]) && !empty ($_FILES["affiche"]["tmp_name"])){
+     //verification extension et erreurs de l'affiche 
+     $tmpName = $_FILES["affiche"]["tmp_name"];
+     $img_name = $_FILES["affiche"]["name"];
+     $size = $_FILES["affiche"]["size"];
+     $error = $_FILES["affiche"]["error"];
+     $type = $_FILES["affiche"]["type"];
+
+     //verifie que l'affiche est bien une image et qu'il n'y a pas d'erreur puis la deplace dans le dossier img
+     $tabExtension=explode('.',$img_name);
+     $extension=strtolower(end($tabExtension));
+     $AcceptedExtensions=["jpg","jpeg","gif","png","webp"];
+     $imgfile = "public/img/";
+     if(in_array($extension,$AcceptedExtensions ) && $error==0 ){
+         $uniqueName=uniqid("",true);
+         $fileName=$uniqueName.".".$extension;
+         move_uploaded_file($tmpName,'public/img/'.$fileName);
+     }
+     else{
+         echo "mauvaise extension, taille trop élevé ou erreur ";
+     }
     
+     $pathimg= "public/img/".$fileName;
+     
+    }
+    else { $pathimg=$afficheActuelle["affiche"] ;}
+
+     //sanitize table des genres du film
+     if(isset($_POST["genre_film"]) && !empty($_POST["genre_film"])) {
+         foreach ($_POST["genre_film"] as $index=>$genre ) {
+             $genre = filter_input(INPUT_POST,"genre_film[$index]", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+         }
+     }
+     //verifie que le tableau des genres n'est pas vide apres le sanitize
+     $TableCheckGenres=false;
+     foreach ($_POST["genre_film"] as $genre) {
+         if (empty($genre)) {
+             $TableCheckGenres = false;
+             break; 
+         }
+         else{ $TableCheckGenres = true ;}
+     }
+     //si tout les champs sont rempli alors on execute la requete d'insertion dans la base de donnée
+    if ($titre && $duree && $sortie && $note && $realisateur && $pathimg){
+        $requete1 = $pdo->prepare("UPDATE film SET 
+                                titre_film = '$titre',
+                                année_sortie_fr='$sortie',
+                                durée_minute=$duree,
+                                affiche='$pathimg',
+                                note=$note,
+                                synopsis='$synopsis',
+                                id_auteur= (SELECT realisateur.id_auteur FROM realisateur WHERE id_personne =
+                                    (SELECT personne.id_personne FROM personne WHERE CONCAT(personne.prenom,' ', personne.nom) = '$realisateur'))    
+                                WHERE id_film = $id ");
+        $requete1->execute();
+
+        $requeteSuppGenres = $pdo->prepare("DELETE FROM appartenir WHERE id_film = $id ");
+        $requeteSuppGenres->execute();
+        foreach($_POST["genre_film"] as $genre){
+        $requete2 = $pdo->prepare("INSERT INTO appartenir (id_film, id_genre)
+        VALUES ($id ,(SELECT genre.id_genre FROM genre WHERE libelle = '$genre'))");
+        $requete2->execute();
+        }
+
+    $_SESSION["message"][]="Modification du film $titre avec succes !";
+    header("Location:index.php?action=ListeFilms");
+    }
+}
+
+public function EditGenreInfo($id){
+
+    $pdo = connect :: seConnecter();
+    $requete = $pdo-> prepare("SELECT * FROM film 
+    INNER JOIN realisateur ON realisateur.id_auteur = film.id_auteur 
+    INNER JOIN personne ON personne.id_personne = realisateur.id_personne
+    INNER JOIN appartenir ON appartenir.id_film = film.id_film
+    INNER JOIN genre ON genre.id_genre = appartenir.id_genre
+    WHERE genre.id_genre = :id ");
+    $requete->execute(["id"=>$id]);
+    $requete2 = $pdo->query("SELECT film.titre_film FROM film");
+    require_once "view/EditGenre.php" ;
+
+}
+
+public function EditGenre($id){
+    $pdo = Connect :: seConnecter();
     
+   //sanitize libelle
+   $libelle = filter_input(INPUT_POST,"libelle", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+   // var_dump($_POST["films"]);
+//sanitize toutes les cellules de $_POST["films"] 
+if(isset($_POST["films"]) && !empty($_POST["films"])) {
+   foreach ($_POST["films"] as $index=>$film ) {
+       $film = filter_input(INPUT_POST,"films[$index]", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+   }
+   // var_dump($_POST["films"]);
+
+   //verification que tout les cellules sont remplis dans $_POST["films"]
+   foreach ($_POST["films"] as $film) {
+       if (empty($film)) {
+           $TableCheck = false;
+           break; 
+       }
+
+       else{ $TableCheck =true ;}
+   }
+   // var_dump($TableCheck);
+}
+//si libelle et toute les cellules de $_POST["films"] = true , crée le genre et crée les tableau associatif necessaires dans "appartenir"
+if ( $libelle ) {
+   if ( $TableCheck ) {
+       $requete1 = $pdo->query("UPDATE genre SET libelle='$libelle' WHERE id_genre = $id ");
+       $requeteSuppGenres = $pdo->prepare("DELETE FROM appartenir WHERE id_genre = $id ");
+       $requeteSuppGenres->execute();
+       foreach($_POST["films"] as $index=>$film){
+           // var_dump($film);
+           $requete2 = $pdo->query( " INSERT INTO appartenir (id_film, id_genre) VALUES (
+               (SELECT id_film FROM film WHERE film.titre_film = '$film'), $id ) " );
+       }
+    }
+   // si seul le libelle = true crée le genre mais ne crée aucune liaison avec des films dans le tableau associatif "appartenir" 
+   else {
+    $requete1 = $pdo->query("UPDATE genre SET libelle='$libelle' WHERE id_genre = $id ");
+   }
+   $_SESSION["message"][]="Modification du Genre $libelle avec succes !";
+   header("Location:/sql-cinema/index.php?action=NvGenre_Liste_Film");
+}
+$_SESSION["message"][]="echec de la modification du genre $libelle";
+header("Location:/sql-cinema/index.php?action=NvGenre_Liste_Film");
+
+}
+
+public function EditActeurInfo($id){
+    $pdo = connect :: seConnecter();
+    $requete = $pdo-> prepare("SELECT acteur_personne.id_personne, film.titre_film AS 'titre',film.id_film,film.année_sortie_fr AS 'annee',film.affiche,
+    role.nom_role AS 'personnage', acteur_personne.nom AS 'nom_acteur', acteur_personne.prenom AS 'prenom_acteur',
+    acteur_personne.sexe AS 'sexe_acteur', acteur_personne.date_naissance AS 'naissance_acteur', role.Id_role,
+    acteur_personne.photo,(YEAR(CURRENT_DATE)-YEAR(acteur_personne.date_naissance)) AS 'age_acteur' 
+    FROM film
+    INNER JOIN jouer ON jouer.id_film = film.id_film
+    INNER JOIN acteur ON acteur.id_acteur = jouer.id_acteur
+    INNER JOIN role ON role.Id_role = jouer.Id_role
+    INNER JOIN personne AS acteur_personne ON acteur_personne.id_personne = acteur.id_personne
+    WHERE acteur_personne.id_personne = :id ");
+    $requete->execute(["id"=>$id]);
+    $requete1 = $pdo->query("SELECT film.titre_film FROM film");
+    $requete2 = $pdo->query("SELECT role.nom_role FROM role");
+    require_once "view/EditActeur.php";
+}
+public function EditActeur($id){
+    $pdo = connect :: seConnecter();
+
+
 
 
 }
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+

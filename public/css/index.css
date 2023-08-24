@@ -48,18 +48,35 @@ body{
     }
     .delele_button{
       padding:10px 15px;
-      background-color:#A61212;
+      background-color:#800808;
       border-radius: 10px;
       width:fit-content;
       color:white;
       font-weight: bold;
       border:none;
-      font-size: 1.2rem;
+      font-size: 0.9rem;
       
     }
     .delete_container{
       display: flex;
       justify-content: center;
+      column-gap: 20px;
+    }
+    .delete_container2{
+      display: flex;
+      justify-content: center;
+      column-gap: 20px;
+      
+    }
+    .edit_btn{
+      padding:10px 15px;
+      background-color:#03461c;
+      border-radius: 10px;
+      width:fit-content;
+      color:white;
+      font-weight: bold;
+      border:none;
+      font-size: 0.9rem;
     }
 
     .left{animation:  rotateAnimation2 0.5s forwards;}
@@ -731,6 +748,7 @@ body{
   font-family: 'Roboto', sans-serif;;
   font-weight: 700;
   line-height: normal;
+  
 
 
 }
@@ -1359,7 +1377,39 @@ cursor:pointer;
   top:85%;
  
 }
-
+.delele_button{
+  padding:10px 15px;
+  background-color:#800808;
+  border-radius: 10px;
+  width:fit-content;
+  color:white;
+  font-weight: bold;
+  border:none;
+  font-size: 1.2rem;
+  
+}
+.delete_container{
+  display: flex;
+  justify-content: center;
+  column-gap: 20px;
+  width: 100%;
+}
+.delete_container2{
+  display: flex;
+  justify-content: center;
+  column-gap: 20px;
+  
+}
+.edit_btn{
+  padding:10px 15px;
+  background-color:#03461c;
+  border-radius: 10px;
+  width:fit-content;
+  color:white;
+  font-weight: bold;
+  border:none;
+  font-size: 1.2rem;
+}
   
 /* ----------------deuxieme carousel---------------------   */
 

@@ -46,10 +46,11 @@ $genres = explode(';', $inffilm['genres_details']);
                     <?php } ?> 
                 </div>
                 <div class="delete_container">
-        <button onclick="document.querySelector('.overlay2').classList.add('active-overlay') ; document.getElementById('help').classList.add('helpActive')" class="delele_button"> Effacer ce Role </button>
-    </div>
+                    <a class="edit_btn" href="/sql-cinema/index.php?action=EditFilmInfo&id=<?= $inffilm["id_film"] ?>">Modifier ce film</a>
+                    <button onclick="document.querySelector('.overlay2').classList.add('active-overlay') ; document.getElementById('help').classList.add('helpActive')" class="delele_button"> Effacer ce Film </button>
+                </div>
 <div id="help">
-<i class="fa-solid fa-trash"></i>
+    <i class="fa-solid fa-trash"></i>
     <h3>Etes vous sure de vouloir supprimer Ce Film ?</h3> <br>
     <p><span style="color:red">Attention &nbsp;<i class="fa-solid fa-triangle-exclamation"></i> &nbsp;</span>: &nbsp;cette suppression est definitive est supprimeras egalement tout les elements en relation avec lui !</p>
         <div class="yes_no">
@@ -131,3 +132,4 @@ $title="Information du film";
 $titre_secondaire="";
 $contenu = ob_get_clean();
 require_once('template.php');
+

@@ -33,7 +33,6 @@
         <?php } ?>
     </div>
 
-
 <script>
     ocument.addEventListener("DOMContentLoaded", function() {
     const elementToDisappear = document.querySelector(".message_ajout");

@@ -1,44 +1,47 @@
 <?php 
 ob_start();
+$inffilm=$requete3->fetch() ;
+$genres = explode(';', $inffilm['genres_details']); 
+
 ?>
 
 <div id="parallax_bloc" >
         <div id="parallax_background"></div>
         <div id="TextAndBtn_parallax">
                 
-            <div class="titre_page"><h2 class="font-size-header-info-acteur-mobile">AJOUTER UN FILM</h2><h2 class="point_rouge" >.</h2></div>
+            <div class="titre_page"><h2 class="font-size-header-info-acteur-mobile">MODIFIER UN FILM</h2><h2 class="point_rouge" >.</h2></div>
             <p style="margin-top:-27px;">Consulter le plus tard !</p>
         </div>
 </div>
 <?php  
     if(isset($_SESSION["message"]) && !empty($_SESSION["message"])){?>     
-        <h3 class="message_ajout"><?= $_SESSION["message"][0]   ?></h3>
+        <h3 class="message_ajout"><?= $_SESSION["message"][0] ?></h3>
         
     <?php } 
         $_SESSION["message"]=[];
-    ?>
+?>
 
  
 <!-- affiche un forumlaire pour ajouter un film et ses genre et realisateur -->
- <form class="formulaire_film" action="/sql-cinema/index.php?action=NvFilm" method="post" enctype="multipart/form-data">
+ <form class="formulaire_film" action="/sql-cinema/index.php?action=EditFilm" method="post" enctype="multipart/form-data">
     <p>
         <label>Titre</label><br>
-            <input placeholder="Exemple : Titanic" class='input_film' id="input1" type="text" name="titre" required>
+            <input value="<?= $inffilm["titre"] ?>" placeholder="Exemple : Titanic" class='input_film' id="input1" type="text" name="titre" required>
         
     </p>
     <p>
         <label >Année de sortie </label><br>
-            <input  placeholder="JJ / MM / YYYY" class='input_film' id="input2" type="date" name="sortie" required>
+            <input  Value="<?= $inffilm["annee"]  ?>" placeholder="JJ / MM / YYYY" class='input_film' id="input2" type="date" name="sortie" required>
         
     </p>
     <p>
         <label>Durée (minutes)</label><br>
-            <input placeholder="Min" class='input_film' id="input3" type="number" name="duree" required min="0">
+            <input value="<?= $inffilm["duree"] ; ?>" placeholder="Min" class='input_film' id="input3" type="number" name="duree" required min="0">
         
     </p>
     <p class='p_flex'>
         <label>synopsis</label><br>
-        <textarea  placeholder="Résumé du film " class='input_film1' name="synopsis" rows="4" cols="50" placeholder="Entrer le synopsis"></textarea>
+        <textarea value="<?= $inffilm["synopsis"] ?>" placeholder="Résumé du film " class='input_film1' name="synopsis" rows="4" cols="50" placeholder="Entrer le synopsis"></textarea>
     </p>
     
         <div class="upload-container">
@@ -49,7 +52,8 @@ ob_start();
     
     <p>
         <label>Note</label><br>
-        <input placeholder="sur 5" class='input_film' id="input5" type="number" name="note" required min="0" max="5">
+            <input value="<?= $inffilm["note"] ?>" placeholder="sur 5" class='input_film' id="input5" type="number" name="note" required min="0" max="5">
+        
     </p>
     <?php 
     $realisateurs=$requete1->fetchAll() ;
@@ -60,9 +64,15 @@ ob_start();
         <label>Réalisateur</label><br>
         
         <select class='select_film' id="input6" name="realisateur_film" required>
-            <?php foreach ($realisateurs as $realisateur) { ?>
-                <option placeholder="Sélectionner" value="<?=$realisateur['nom_complet']?>"> <?= $realisateur["nom_complet"] ?> </option>
-            <?php }?>
+            <?php foreach ($realisateurs as $realisateur) { 
+
+                if ($realisateur["nom_complet"] !=  $inffilm["prenom_realisateur"]." ".$inffilm["nom_realisateur"]){?>
+
+                <option  placeholder="Sélectionner" value="<?=$realisateur['nom_complet']?>"> <?= $realisateur["nom_complet"] ?> </option><?php 
+
+                } else { ?>
+
+                <option selected placeholder="Sélectionner" value="<?=$realisateur['nom_complet']?>"> <?= $realisateur["nom_complet"] ?> </option> <?php } } ?>
         </select> 
     </p>
 
@@ -80,7 +90,7 @@ ob_start();
                         <option value="<?=$genre['libelle']?>"> <?= $genre["libelle"] ?> </option>
                     <?php }?>
             </p>
-            </select>
+            </select> 
         </div> 
     </p>
    

@@ -25,7 +25,7 @@
                 <p>Néé le :<?php echo $infRealisateur[0]["naissance_realisateur"]  ?></p>
                 <p>Age : <?php echo $infRealisateur[0]["age_realisateur"]  ?> Ans </p>
                 <div class="delete_container">
-        <button onclick="document.querySelector('.overlay2').classList.add('active-overlay') ; document.getElementById('help').classList.add('helpActive')" class="delele_button"> Effacer ce Role </button>
+        <button onclick="document.querySelector('.overlay2').classList.add('active-overlay') ; document.getElementById('help').classList.add('helpActive')" class="delele_button"> Effacer ce Realisateur </button>
     </div>
 <div id="help">
 <i class="fa-solid fa-trash"></i>

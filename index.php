@@ -36,6 +36,13 @@ if (isset($_GET["action"])) {
         case "DeleteGenre":$ctrlCinema->DeleteGenre($_GET["id"]);break;
         case "DeleteActeur":$ctrlCinema->DeleteActeur($_GET["id"]);break;
         case "DeleteRealisateur":$ctrlCinema->DeleteRealisateur($_GET["id"]);break;
+        case "EditFilmInfo":$ctrlCinema->EditFilmInfo($_GET["id"]);break;
+        case "EditFilm":$ctrlCinema->EditFilm($_GET["id"]);break;
+        case "EditGenreInfo":$ctrlCinema->EditGenreInfo($_GET["id"]);break;
+        case "EditGenre":$ctrlCinema->EditGenre($_GET["id"]);break;
+        case "EditActeurInfo":$ctrlCinema->EditActeurInfo($_GET["id"]);break;
+        case "EditActeur":$ctrlCinema->EditActeur($_GET["id"]);break;
+    
     }
 } else {
     $ctrlCinema->ListeFilms() ;

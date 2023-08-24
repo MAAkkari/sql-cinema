@@ -3,7 +3,7 @@
     $infActeur=$requete->fetchAll() ;
 ?>
 
-    <main> 
+    <main>
     <div id="parallax_bloc" >
             <div id="parallax_background"></div>
             <div id="TextAndBtn_parallax">
@@ -26,7 +26,9 @@
                 <p>Néé le :<?= $infActeur[0]["naissance_acteur"]  ?></p>
                 <p>Age : <?= $infActeur[0]["age_acteur"] ?> Ans </p>
                 <div class="delete_container">
-        <button onclick="document.querySelector('.overlay2').classList.add('active-overlay') ; document.getElementById('help').classList.add('helpActive')" class="delele_button"> Effacer ce Role </button>
+                <a class="edit_btn" href="/sql-cinema/index.php?action=EditActeurInfo&id=<?= $infActeur[0]["id_personne"] ?>">Modifier cet Acteur</a>
+           
+        <button onclick="document.querySelector('.overlay2').classList.add('active-overlay') ; document.getElementById('help').classList.add('helpActive')" class="delele_button"> Effacer cet Acteur </button>
     </div>
 <div id="help">
 <i class="fa-solid fa-trash"></i>
@@ -36,14 +38,9 @@
         <a href="/sql-cinema/index.php?action=DeleteActeur&id=<?= $infActeur[0]["id_personne"] ?>">Oui</a>
         <button onclick="document.querySelector('.overlay2').classList.remove('active-overlay') ; document.getElementById('help').classList.remove('helpActive')">Non</button>
         </div>
+    </div>
+    </div> 
 </div>
-            </div> 
-           
-                
-               
-           
-          
-        </div>
         
           
 
