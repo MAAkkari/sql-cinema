@@ -26,7 +26,7 @@
                 <p>Néé le :<?= $infActeur[0]["naissance_acteur"]  ?></p>
                 <p>Age : <?= $infActeur[0]["age_acteur"] ?> Ans </p>
                 <div class="delete_container">
-                <a class="edit_btn" href="/sql-cinema/index.php?action=EditActeurInfo&id=<?= $infActeur[0]["id_personne"] ?>">Modifier cet Acteur</a>
+                <a style="display:none;"class="edit_btn" href="/sql-cinema/index.php?action=EditActeurInfo&id=<?= $infActeur[0]["id_personne"] ?>">Modifier cet Acteur</a>
            
         <button onclick="document.querySelector('.overlay2').classList.add('active-overlay') ; document.getElementById('help').classList.add('helpActive')" class="delele_button"> Effacer cet Acteur </button>
     </div>

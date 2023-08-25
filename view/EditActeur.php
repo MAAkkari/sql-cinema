@@ -19,7 +19,7 @@ $infActeur=$requete->fetchAll() ;
         $_SESSION["message"]=[];
     ?>
 <!-- affiche un formulaire qui permet de crée un nouvel acteur et de selectionner les roles qu'il a jouer dans differents films -->
-<form class="formulaire_film" action="/sql-cinema/index.php?action=NvActeur" method="post" enctype="multipart/form-data">
+<form class="formulaire_film" action="/sql-cinema/index.php?action=EditActeur&id=<?= $infActeur[0]["id_personne"] ?>" method="post" enctype="multipart/form-data">
     <p>
         <label> Nom de l'acteur</label><br>
         <input value="<?= $infActeur[0]["nom_acteur"]  ?>" class='input_acteur' type="text" name="name_acteur" required>
@@ -28,13 +28,12 @@ $infActeur=$requete->fetchAll() ;
         <label>
             Prenom du acteur</lavel> <br>
             <input value="<?= $infActeur[0]["prenom_acteur"]  ?>" class='input_acteur' type="text" name="prenom_acteur" required>
-        
     </p>
+
     <p>
         <label>
             Sexe</label> <br>
             <select class='select_film' name="sexe_acteur" required>
-
                 <?php if($infActeur[0]["sexe_acteur"] == "Male") { ?>
                     <option value="female">Femme</option>
                     <option selected value="male">Homme</option>
@@ -42,18 +41,18 @@ $infActeur=$requete->fetchAll() ;
                     <option selected value="female">Femme</option>
                     <option value="male">Homme</option>
                 <?php } ?>
-
             </select>
-        
     </p>
+
     <p>
         <label >
             Date de naissance  </label><br>
             <input value="<?= $infActeur[0]["naissance_acteur"]  ?>" class='input_acteur' type="date" name="naissance_acteur" required>
        
     </p>
+
         <div class="upload-container">
-        <input onchange="updateFileName(this)" placeholder="Ajouter un fichier " class='input-file' id="document-upload" type="file" name="image_acteur" required>
+        <input onchange="updateFileName(this)" placeholder="Ajouter un fichier " class='input-file' id="document-upload" type="file" name="image_acteur" >
             <label for="document-upload" class="upload-button">Ajouter une Photo</label>
             <span style="color:white;" id="file-name"></span>
         </div>
@@ -63,32 +62,39 @@ $infActeur=$requete->fetchAll() ;
     ?>
     <div id="film_actor_selector">
     <label>
-                cet acteur a jouer <br>
+            cet acteur a jouer <br>
             </label>
         <?php  foreach ($infActeur as $acteur) { ?> 
             <p class="film_actor_line">
-            
                 <select class='input_acteur select_film' name="roles_acteur[]" >
                     <option value="">None</option>
-                    <?php foreach ($roles as $role) { ?>
+
+                    <?php foreach ($roles as $role) { 
+                        if ( $role['nom_role']!= $acteur["personnage"]){?>
                         <option value="<?=$role['nom_role']?>"> <?= $role["nom_role"] ?> </option>
-                    <?php }?>
-                </select> 
+                    <?php } else { ?>   
+                        <option selected value="<?=$role['nom_role']?>"> <?= $role["nom_role"] ?> </option>
+                    <?php }}?>
+
+                </select>
                 &nbsp dans le film
-                <select class='input_acteur select_film' name="films_acteur[]" >
+                <select class='input_acteur select_film' name="films_acteur[]">
                     <option value="">None</option>
-                    <?php foreach ($films as $film) { ?>
+
+                    <?php foreach ($films as $film) { 
+                        if ( $film["titre_film"] != $acteur['titre']){ ?>
                         <option value="<?=$film['titre_film']?>"> <?= $film["titre_film"] ?> </option>
-                    <?php }?>
+                        <?php } else { ?>   
+                            <option selected value="<?=$film['titre_film']?>"> <?= $film["titre_film"] ?> </option>
+                    <?php }}?>
                 </select>     
             </p>
         <?php } ?>
         <button type="button" class='acteur+' id="film_actor_button2"  >+</button>
     </div>
-   
-    
-        <input id ="boutton_film" class="boutton_film" type="submit" name="submit" value="Submit !">
-    
+
+    <input id ="boutton_film" class="boutton_film" type="submit" name="submit" value="Submit !">
+
 </form>
 
 

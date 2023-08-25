@@ -786,12 +786,116 @@ public function EditActeurInfo($id){
     $requete2 = $pdo->query("SELECT role.nom_role FROM role");
     require_once "view/EditActeur.php";
 }
+
+
 public function EditActeur($id){
-    $pdo = connect :: seConnecter();
+    $pdo = connect::seConnecter(); 
+    $requetePhoto = $pdo->prepare("SELECT photo FROM personne WHERE id_personne=:id"); 
+    $requetePhoto->execute(["id"=>$id]);
+    $PhotoActuelle = $requetePhoto->fetch();
 
+    //sanitize nom_acteur , prenom_acteur , sexe_acteur , naissance_acteur
+    $nom_acteur = filter_input(INPUT_POST,"name_acteur", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $prenom_acteur = filter_input(INPUT_POST,"prenom_acteur", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $sexe_acteur = filter_input(INPUT_POST,"sexe_acteur", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $naissance_acteur = filter_input(INPUT_POST, "naissance_acteur",  FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
+     if(isset($_FILES["affiche"]) && !empty ($_FILES["affiche"]) && !empty ($_FILES["affiche"]["tmp_name"])){
 
+        //sanitize de l'image de l'acteur 
+        $tmpName = $_FILES["image_acteur"]["tmp_name"];
+        $img_name = $_FILES["image_acteur"]["name"];
+        $size = $_FILES["image_acteur"]["size"];
+        $error = $_FILES["image_acteur"]["error"];
+        $type = $_FILES["image_acteur"]["type"];
+        
+        //verifie que l'image est bien une image et que la taille est inferieur a 2Mo
+        $tabExtension=explode('.',$img_name);
+        $extension=strtolower(end($tabExtension));
+        $AcceptedExtensions=["jpg","jpeg","gif","png"];
+        $imgfile = "public/img/";
 
+        //si l'image est bien une image , l'image est upload dans le dossier "public/img"
+        if(in_array($extension,$AcceptedExtensions ) && $error==0 ){
+            $uniqueName=uniqid("",true);
+            $fileName=$uniqueName.".".$extension;
+            move_uploaded_file($tmpName,'public/img/'.$fileName);
+            $pathimg= "public/img/".$fileName;
+        }
+
+        else{
+            echo "erreur image : mauvaise extension, taille trop élevé ou erreur" ;
+        }
+
+       
+
+    } else { $pathimg=$PhotoActuelle["photo"] ; }
+
+     //sanize les deux tableaux $_POST["films_acteur"] et $_POST["roles_acteur"] qui contiennent les films et roles de l'acteur
+     if(isset($_POST["films_acteur"]) && !empty($_POST["films_acteur"])) {
+         foreach ($_POST["films_acteur"] as $index=>$film_acteur ) {
+             $film_acteur = filter_input(INPUT_POST,"films_acteur[$index]", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+         }
+         foreach ($_POST["roles_acteur"] as $index=>$role_acteur ) {
+             $role_acteur = filter_input(INPUT_POST,"roles_acteur[$index]", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+         }
+     }
+     //verifie que les deux tableaux $_POST["films_acteur"] et $_POST["roles_acteur"] ne sont pas vide apres le sanitize
+    $TableCheckRole=false;
+    $TableCheckFilms=false;
+    foreach ($_POST["films_acteur"] as $film_acteur) {
+        if (empty($film_acteur)) {
+            $TableCheckFilms = false;
+            break; 
+        }
+        else{ $TableCheckFilms =true ;}
+    }
+    foreach ($_POST["roles_acteur"] as $role_acteur) {
+        if (empty($role_acteur)) {
+            $TableCheckRole = false;
+            break;
+        }
+        else{ $TableCheckRole =true ;}
+    }
+
+    //verifie que les champs ne sont pas vide apres le sanitize et creation de l'acteur
+    if($nom_acteur && $prenom_acteur && $sexe_acteur  && $naissance_acteur &&  $pathimg &&  $naissance_acteur){
+        
+        $requete1 = $pdo->prepare("UPDATE personne SET 
+        nom ='$nom_acteur',
+        prenom='$prenom_acteur',
+        sexe='$sexe_acteur',
+        date_naissance='$naissance_acteur',
+        photo='$pathimg' 
+        WHERE id_personne = $id ");
+
+        //verifie que les deux tableaux $_POST["films_acteur"] et $_POST["roles_acteur"] , puis rempli la table associatif jouer
+        if ( $TableCheckFilms && $TableCheckRole ){
+             foreach($_POST["films_acteur"] as $index=>$film){
+             $nom_role=$_POST["roles_acteur"][$index];
+             // var_dump($_POST['roles_acteur']);
+             // var_dump($nom_role);
+
+            $requete2 = $pdo->prepare(" DELETE FROM jouer WHERE id_acteur = ( SELECT id_acteur FROM acteur WHERE id_personne =$id ) ");
+            $requete3 = $pdo->prepare("INSERT INTO jouer (id_film, id_acteur, id_role) SELECT
+                (SELECT id_film FROM film WHERE film.titre_film = '$film'),
+                (SELECT id_acteur FROM acteur WHERE acteur.id_personne = $id),
+                (SELECT id_role FROM role WHERE role.nom_role = '$nom_role')");
+
+            }
+            $requete1->execute();
+            $requete2->execute();
+            $requete3->execute();
+
+            $_SESSION["message"][]="Modification de l'acteur $prenom_acteur $nom_acteur avec succes !";
+            header("Location:/sql-cinema/index.php?action=ListeActeurs");
+         }
+        
+
+     
+     }
+     
+ 
 }
 
 
