@@ -43,7 +43,7 @@ body{
         font-size:25px;
         border: none;
         padding-top: 2px;
-        
+           
         
     }
     .delele_button{
@@ -152,7 +152,7 @@ body{
         
     }
     #burger-menu{
-      top:7.5%;
+      top:15%;
     }
     .initial{  
         left :100%;
@@ -1050,35 +1050,7 @@ text-transform: uppercase;
   #logo{
       height: 3.5rem;
   }
-  #burger_btn{
-      border-radius: 100px;
-      background: #D9D9D9;
-      width:40px;
-      height: 40px;
-      font-size:25px;
-      border: none;
-      padding-top: 2px;
-      
-      
-  }
-  .left{animation:  rotateAnimation2 0.5s forwards;}
-  .right{animation:  rotateAnimation 0.5s forwards;}
-  @keyframes rotateAnimation {
-      0% {
-        transform: rotate(0deg); /* Starting point: no rotation */
-      }
-      100% {
-        transform: rotate(180deg); /* Ending point: 180 degrees clockwise rotation */
-      }
-    }
-    @keyframes rotateAnimation2 {
-      0% {
-        transform: rotate(180deg); /* Starting point: no rotation */
-      }
-      100% {
-        transform: rotate(0deg); /* Ending point: 180 degrees counterclockwise rotation */
-      }
-    }
+  
 
   
   #burger_links{
